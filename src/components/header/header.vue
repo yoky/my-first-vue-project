@@ -189,15 +189,21 @@
 			z-index:100
 			height:100%
 			overflow:auto
+			background-color:rgba(7, 17, 27, .8)
 			top:0
 			left:0
-			// transition:all 0.5s
+			transition:all 0.5s
 			// &.fade-transition
 			// 	opacity:0
 			// 	background-color:rgba(7, 17, 27, .8)
-			// &.fade-enter-active,&.fade-leave-active
-			// 	opacity:0
-			// 	background-color:rgba(7, 17, 27, 0)
+			&.fade-enter,&.fade-leave
+				transition:all 0.5s
+				opacity:0
+				background-color:rgba(7, 17, 27, 0)
+			&.fade-enter-active,&.fade-leave-active
+				transition:all 0.5s
+				opacity:1
+				background-color:rgba(7, 17, 27, .8)
 			.detail-wrapper
 				min-height:100%
 				width:100%
