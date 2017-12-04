@@ -30,7 +30,7 @@
 		<div class="background">
 			<img :src="seller.avatar">
 		</div>
-		<!-- <transition name="fade"> -->
+		<transition name="fade">
 			<div class="detail" v-show="detailShow">
 				<div class="detail-wrapper clearfix">
 					<div class="detail-main">
@@ -63,7 +63,7 @@
 					<i class="icon-close"></i>
 				</div>
 			</div>
-		<!-- </transition> -->
+		</transition>
 	</div>
 </template>
 
@@ -193,17 +193,13 @@
 			top:0
 			left:0
 			transition:all 0.5s
-			// &.fade-transition
-			// 	opacity:0
-			// 	background-color:rgba(7, 17, 27, .8)
-			&.fade-enter,&.fade-leave
+			backdrop-filter:blur(10px)
+			&.fade-enter
 				transition:all 0.5s
 				opacity:0
-				background-color:rgba(7, 17, 27, 0)
-			&.fade-enter-active,&.fade-leave-active
-				transition:all 0.5s
+			&.fade-leave
+				transition:all .5s
 				opacity:1
-				background-color:rgba(7, 17, 27, .8)
 			.detail-wrapper
 				min-height:100%
 				width:100%
