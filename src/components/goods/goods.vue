@@ -26,7 +26,7 @@
 								</div>
 								<div class="price">
 									<span class="now">￥{{food.price}}</span>
-									<span class="old" v-show="food.oldPrice"></span>
+									<span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
 								</div>
 								<div class="cartcontrol-wrapper">
 								    <cartcontrol :food="food"></cartcontrol>
@@ -218,6 +218,7 @@ export default {
     _initScroll () {
       this.menuScroll = new BScroll(this.$refs.menuWrapper, {click: true})
       this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {probeType: 3, click: true})
+      console.log(this.foodsScroll)
       this.foodsScroll.on('scroll', (pos) => {
         this.scrollY = Math.abs(Math.round(pos.y))
       })

@@ -3,10 +3,10 @@
 </template>
 
 <style type="text/css" lang="stylus" refs="stylesheet/stylus">
-	export default{}
+	
 
 </style>
 
 <script type="text/ecmascript-6">
-	
+export default{}
 </script>
