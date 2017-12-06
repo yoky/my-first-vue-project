@@ -32,14 +32,31 @@
 			<split></split>
 			<div class="rating">
 				<h1 class="title">商品评价</h1>
-				<ratingselect :select-type="selectType" 
-				:only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
+				<ratingselect :selectType="selectType" 
+				:onlyContent="onlyContent" :desc="desc" :ratings="food.ratings"
+				@ratingtype.select="setType" @content.toogle="setOnlyContent"></ratingselect>
+				<div class="rating-wrapper">
+					<ul v-show="food.ratings && food.ratings.length>0">
+						<li class="rating-item" v-for="rating in food.ratings" v-show="needShow(rating.rateType,rating.text)">
+							<div class="user">
+								<span class="name">{{rating.username}}</span>
+								<img class="avatar" width="12" height="12" :src="rating.avatar"></img>
+							</div>
+							<div class="time">{{rating.rateTime}}</div>
+							<p class="text">
+								<i :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></i>{{rating.text}}
+							</p>
+						</li>
+					</ul>
+					<div class="no-rating" v-show="!food.ratings || !food.ratings.length"></div>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <style type="text/css" lang="stylus" refs="stylesheet/stylus">
+@import "../../common/stylus/mixin"
 	.food
 		position:fixed
 		left:0
@@ -130,7 +147,45 @@
 				font-size:14px
 				line-height:14px
 				color:rgb(7, 17, 27)
-				margin-left:18px   
+				margin-left:18px 
+			.rating-wrapper
+				padding:0 18px
+				.rating-item
+					position:relative
+					padding:16px 0
+					border-1px(rgba(7, 17, 27, .1))
+					.user
+						position:absolute
+						right:0
+						top:16px
+						font-size:0
+						line-height:12px
+						.name
+							font-size:10px
+							display:inline-block
+							vertical-align:top
+							color:rgb(147, 153, 159)
+							margin-right:6px
+						.avatar
+							border-radius:50%
+					.time
+						line-height:12px
+						font-size:10px
+						color:rgb(77, 85, 93)
+						margin-bottom:6px
+					.text
+						line-height:16px
+						font-size:12px
+						color:rgb(7, 17, 27)
+						.icon-thumb_up,.icon-thumb_down
+							line-height:16px
+							margin-right:4px
+							font-size:12px
+						.icon-thumb_up
+							color:rgb(0, 160, 220)
+						.icon-thumb_down
+							color:rgb(147, 153, 159)
+			  
 </style>
 
 <script type="text/ecmascript-6">
@@ -161,7 +216,7 @@ export default {
   data () {
     return {
       showFlag: false,
-      selectType: ALL,
+      selectType: 2,
       onlyContent: true,
       desc: {
         all: '全部',
@@ -177,11 +232,8 @@ export default {
       this.onlyContent = true
       this.$nextTick(() => {
         if (!this.scroll) {
-          console.log(1)
           this.scroll = new BScroll(this.$refs.food, {probeType: 3, click: true})
-          console.log(this.scroll)
         } else {
-          console.log(this.scroll)
           this.scroll.refresh()
         }
       })
@@ -194,6 +246,22 @@ export default {
         return
       }
       Vue.set(this.food, 'count', 1)
+    },
+    setType (type) {
+      this.selectType = type
+    },
+    setOnlyContent () {
+      this.onlyContent = !this.onlyContent
+    },
+    needShow (type, text) {
+      if (this.onlyContent && !text) {
+        return false
+      }
+      if (this.selectType === ALL) {
+        return true
+      } else {
+        return type === this.selectType
+      }
     }
   }
 }

@@ -1,11 +1,11 @@
 <template>
 	<div class="ratingselect">
 		<div class="rating-type border-1px" >
-			<span class="block positive" :class="{'active':selectType==2}" @click="select(2,$event)">{{desc.all}}<span class="count">47</span></span>
-			<span class="block positive" :class="{'active':selectType==0}" @click="select(0,$event)">{{desc.positive}}<span class="count">50</span></span>
-			<span class="block negative" :class="{'active':selectType==1}" @click="select(1,$event)">{{desc.negative}}<span class="count">47</span></span>
+			<span class="block positive" :class="{'active':selectType==2}" @click="select(2,$event)">{{desc.all}}<span class="count">{{ratings.length}}</span></span>
+			<span class="block positive" :class="{'active':selectType==0}" @click="select(0,$event)">{{desc.positive}}<span class="count">{{positives.length}}</span></span>
+			<span class="block negative" :class="{'active':selectType==1}" @click="select(1,$event)">{{desc.negative}}<span class="count">{{negatives.length}}</span></span>
 		</div>
-		<div class="switch">
+		<div class="switch" @click="toggleContent" :class="{'on':onlyContent}">
 			<i class="icon-check_circle"></i>
 			<span class="text">只看有内容的评价</span>
 		</div>
@@ -45,22 +45,27 @@
 			padding:12px 18px
 			line-height:24px
 			font-size:0
-			border-bottom:rgba(7, 17, 27, .1)
+			border-1px(rgba(7, 17, 27, .1))
 			color:rgb(147, 153, 159)
 			.icon-check_circle
 				margin-right:4px
 				font-size:24px
+				vertical-align:middle
 			.text
 				font-size:12px
 				display:inline-block
 				vertical-align:top
+				vertical-align:middle
+			&.on
+				color:rgb(0, 160, 220)
 				
 </style>
 
 <script type="text/ecmascript-6">
-// const POSITIVE = 0
-// const NEGATIVE = 1
-const ALL = 2
+// import Vue from 'vue'
+const POSITIVE = 0
+const NEGATIVE = 1
+// const ALL = 2
 export default {
   props: {
     ratings: {
@@ -70,12 +75,10 @@ export default {
       }
     },
     selectType: {
-      type: Number,
-      default: ALL
+      type: Number
     },
     onlyContent: {
-      type: Boolean,
-      default: false
+      type: Boolean
     },
     desc: {
       type: Object,
@@ -89,11 +92,33 @@ export default {
     }
   },
   methods: {
-  	select (type,event) {
-  	  if (!event._constructed) {
+    select (type, event) {
+      if (!event._constructed) {
         return
       }
-  	}
+      console.log(this.selectType)
+      console.log(type)
+      this.$emit('ratingtype.select', type)
+    },
+    toggleContent () {
+      if (!event._constructed) {
+        return
+      }
+      console.log(this.onlyContent)
+      this.$emit('content.toogle')
+    }
+  },
+  computed: {
+    positives () {
+      return this.ratings.filter((rating) => {
+        return rating.rateType === POSITIVE
+      })
+    },
+    negatives () {
+      return this.ratings.filter((rating) => {
+        return rating.rateType === NEGATIVE
+      })
+    }
   }
 }
 </script>
