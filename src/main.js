@@ -33,6 +33,8 @@ var routes = [{
 var router = new VueRouter({
   routes: routes
 })
+// 页面加载自动导航到goods页面
+router.push('/goods')
 
 new Vue({
   el: '#app',

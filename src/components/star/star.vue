@@ -64,7 +64,7 @@
   export default {
     props: {
       size: {
-        type: String
+        type: Number
       },
       score: {
         type: Number

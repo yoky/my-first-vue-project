@@ -34,7 +34,7 @@
 				<h1 class="title">商品评价</h1>
 				<ratingselect :selectType="selectType" 
 				:onlyContent="onlyContent" :desc="desc" :ratings="food.ratings"
-				@ratingtype.select="setType" @content.toogle="setOnlyContent"></ratingselect>
+				@changeType="setType" @toogleContent="setOnlycontent"></ratingselect>
 				<div class="rating-wrapper">
 					<ul v-show="food.ratings && food.ratings.length>0">
 						<li class="rating-item" v-for="rating in food.ratings" v-show="needShow(rating.rateType,rating.text)">
@@ -42,13 +42,13 @@
 								<span class="name">{{rating.username}}</span>
 								<img class="avatar" width="12" height="12" :src="rating.avatar"></img>
 							</div>
-							<div class="time">{{rating.rateTime}}</div>
+							<div class="time">{{rating.rateTime | formatDate}}</div>
 							<p class="text">
 								<i :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></i>{{rating.text}}
 							</p>
 						</li>
 					</ul>
-					<div class="no-rating" v-show="!food.ratings || !food.ratings.length"></div>
+					<div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
 				</div>
 			</div>
 		</div>
@@ -185,6 +185,10 @@
 							color:rgb(0, 160, 220)
 						.icon-thumb_down
 							color:rgb(147, 153, 159)
+				.no-rating
+					padding:16px 0
+					font-size:12px
+					color:rgb(147, 153, 159)
 			  
 </style>
 
@@ -194,6 +198,7 @@ import Vue from 'vue'
 import cartcontrol from '../../components/cartcontrol/cartcontrol'
 import split from '../../components/split/split'
 import ratingselect from '../../components/ratingselect/ratingselect'
+import {formatDate} from '../../common/js/date'
 
 // const POSITIVE = 0
 // const NEGATIVE = 1
@@ -216,8 +221,8 @@ export default {
   data () {
     return {
       showFlag: false,
-      selectType: 2,
-      onlyContent: true,
+      selectType: ALL,
+      onlyContent: false,
       desc: {
         all: '全部',
         positive: '推荐',
@@ -232,7 +237,7 @@ export default {
       this.onlyContent = true
       this.$nextTick(() => {
         if (!this.scroll) {
-          this.scroll = new BScroll(this.$refs.food, {probeType: 3, click: true})
+          this.scroll = new BScroll(this.$refs.food, {click: true})
         } else {
           this.scroll.refresh()
         }
@@ -249,9 +254,15 @@ export default {
     },
     setType (type) {
       this.selectType = type
+      this.$nextTick(() => {
+        this.scroll.refresh()
+      })
     },
-    setOnlyContent () {
+    setOnlycontent () {
       this.onlyContent = !this.onlyContent
+      this.$nextTick(() => {
+        this.scroll.refresh()
+      })
     },
     needShow (type, text) {
       if (this.onlyContent && !text) {
@@ -262,6 +273,12 @@ export default {
       } else {
         return type === this.selectType
       }
+    }
+  },
+  filters: {
+    formatDate (time) {
+      let date = new Date(time)
+      return formatDate(date, 'yyyy-MM-dd hh:mm')
     }
   }
 }

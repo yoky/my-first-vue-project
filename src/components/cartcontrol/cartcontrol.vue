@@ -1,7 +1,9 @@
 <template>
 	<div class="cartcontrol">
-		<transition name="move">
-			<div class="cart-decrease icon-remove_circle_outline" v-show="food.count>0" @click.stop.prevent="decreaseCart"></div>
+		<transition>
+			<div class="cart-decrease" v-show="food.count>0" @click.stop.prevent="decreaseCart">
+				<span class="icon-remove_circle_outline inner inner1"></span>
+			</div>
 		</transition>
 		<div class="cart-count" v-show="food.count>0">{{food.count}}</div>
 		<div class="cart-add icon-add_circle" @click.stop.prevent="addCart"></div>
@@ -18,18 +20,19 @@
 			line-height:24px
 			color:rgb(0, 160, 220)
 		.cart-decrease
-			transition:all 0.2s linear
-			transform:translate3D(0,0,0)
-			transform:rotate(0)
-			&.move-enter
-				opocity:0
-				
-				transform:translate3D(48px,0,0)
-				// transform:rotate(180deg)
-				transition:all 0.2s linear
-			&.move-leave
-				opocity:1
-				transform:translate3D(48px,0,0)
+			.inner
+				display: inline-block
+				line-height: 24px
+				font-size: 24px
+				color: rgb(0, 160, 220)
+				transition: all 0.4s linear
+			&.v-enter-active, &.v-leave-active
+				transition: all 0.4s linear
+			&.v-enter, &.v-leave-active   //刚进入和离开后的状态
+				opacity: 0
+				transform: translateX(24px)
+				.inner1
+					transform: rotate(180deg)
 		.cart-count
 			display:inline-block
 			font-size:10px
@@ -39,7 +42,6 @@
 			text-align:center
 			width:12px
 			padding-top:6px
-		// .cart-add			
 
 </style>
 

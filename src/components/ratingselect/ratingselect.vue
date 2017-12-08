@@ -96,16 +96,13 @@ export default {
       if (!event._constructed) {
         return
       }
-      console.log(this.selectType)
-      console.log(type)
-      this.$emit('ratingtype.select', type)
+      this.$emit('changeType', type)
     },
     toggleContent () {
       if (!event._constructed) {
         return
       }
-      console.log(this.onlyContent)
-      this.$emit('content.toogle')
+      this.$emit('toogleContent')
     }
   },
   computed: {

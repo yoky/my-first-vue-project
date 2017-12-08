@@ -36,7 +36,7 @@
 					<div class="detail-main">
 						<h1 class="name">{{seller.name}}</h1>
 						<div class="star-wrapper">
-							<star :score="seller.score" size="48"></star>
+							<star :score="seller.score" :size=48></star>
 						</div>
 						<div class="title">
 							<div class="line"></div>
